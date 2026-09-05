@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<locatingRules xmlns="http://thaiopensource.com/ns/locating-rules/1.0">
+  <namespace ns="http://www.w3.org/2000/svg" typeId="SVG" />
+  <typeId id="SVG" uri="svg.rnc"/>
+  <uri pattern="*.svg" typeId="SVG"/>
+  <documentElement localName="svg" typeId="SVG"/>
+</locatingRules>
