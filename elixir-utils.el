@@ -1,3 +1,4 @@
+;;;;  -*- lexical-binding: t; -*-
 ;;;; Utilities for jumping between model/controller/view/test based on Phoenix
 ;;;; filename conventions.
 
@@ -61,4 +62,4 @@ path and the extension."
         (find-file test_path)
       (message "Couldn't find test for %s"  basename))))
 
-(provide 'dt/elixir-utils)
+(provide 'elixir-utils)
