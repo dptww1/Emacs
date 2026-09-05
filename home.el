@@ -1,9 +1,3 @@
-;;;===========================================================================
-;;; Applescript
-;;;---------------------------------------------------------------------------
-(require 'applescript-mode)
-(add-to-list 'auto-mode-alist '("\\.osa$" . applescript-mode))
-
 (use-package magit-section) ; required for roam
 
 (setq org-html-postamble nil)
@@ -18,6 +12,7 @@
 ;; https://org-roam.discourse.group/t/v2-error-running-org-roam-dailies-find-today/1511/4
 (use-package org-roam
   :ensure t
+  :after (org)
   :custom
   ;(org-roam-database-connector 'sqlite-builtin)
   ;(org-roam-db-connection "~/org-roam2")
@@ -41,10 +36,6 @@
 (setq org-redisplay-inline-images t)
 (setq org-startup-with-inline-images "inlineimages")
 (setq org-hide-emphasis-markers t)
-
-(use-package org-bullets
-  :config
-  (add-hook 'org-mode-hook (lambda () org-bullets-mode 1)))
 
 ;; from https://zzamboni.org/post/beautifying-org-mode-in-emacs/
 (let* ((variable-tuple
@@ -100,16 +91,16 @@
 (setq bibtex-completion-display-formats
       '((t . "${author:*} ${title:*} ${year:4}")))
 
-(use-package citar
-  :no-require
-  :custom
-  (org-cite-global-bibliography '("~/org-roam2/references.bib"))
-  (org-cite-insert-processor 'citar)
-  (org-cite-follow-processor 'citar)
-  (org-cite-activate-processor 'citar)
-  (citar-bibliography org-cite-global-bibliography)
-  :bind
-  (:map org-mode-map :package org ("C-c b" . #'org-cite-insert)))
+;(use-package citar
+;  :no-require
+;  :custom
+;  (org-cite-global-bibliography '("~/org-roam2/references.bib"))
+;  (org-cite-insert-processor 'citar)
+;  (org-cite-follow-processor 'citar)
+;  (org-cite-activate-processor 'citar)
+;  (citar-bibliography org-cite-global-bibliography)
+;  :bind
+;  (:map org-mode-map :package org ("C-c b" . #'org-cite-insert)))
 
 ;(setq org-ref-bibliography-notes "~/org-roam2/notes.org"
 ;      org-ref-default-bibliography '("~/org-roam2/references.bib")
@@ -117,13 +108,13 @@
 ;(require 'org-ref)
 
 ; https://github.com/zweifisch/ob-http
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((emacs-lisp . t)
-   (http . t)))
+;(org-babel-do-load-languages
+; 'org-babel-load-languages
+; '((emacs-lisp . t)
+;   (http . t)))
 
-(with-eval-after-load 'org
-  (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
+;(with-eval-after-load 'org
+;  (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
 
 ;;; make `shell-command` and `shell-command-on-region` read .bash_profile
 ;;; https://emacs.stackexchange.com/questions/17249/how-to-make-terminal-shell-spawned-inside-emacs-running-on-a-mac-inherit-the-env
@@ -140,22 +131,24 @@
 ;;; `ag` not working even with the above; see
 ;;; https://github.com/Wilfred/ag.el/issues/93#issuecomment-348003505
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
-(defun dt-js-goto-import ()
-  "Visits the file at the current `import` line"
-  (interactive)
-  (save-excursion
-    (beginning-of-line)
-    (unless (re-search-forward "^import.*\\\sfrom\\\s['\"]" (line-end-position) t)
-      (error "Not on a Javascript `import' line"))
-    (let ((path-start (point)))
-      (unless (re-search-forward "[\"']" (line-end-position) t)
-        (error "Unterminated file name"))
-      (find-file
-       (concat (file-name-directory (buffer-file-name))
-               (buffer-substring path-start (1- (point))))))))
 
-(require 'js2-mode)
-(define-key js2-mode-map (kbd "C-c i") #'dt-js-goto-import)
+;;;Eglot makes this unneccessary as M-. works
+;(defun dt-js-goto-import ()
+;  "Visits the file at the current `import` line"
+;  (interactive)
+;  (save-excursion
+;    (beginning-of-line)
+;    (unless (re-search-forward "^import.*\\\sfrom\\\s['\"]" (line-end-position) t)
+;      (error "Not on a Javascript `import' line"))
+;    (let ((path-start (point)))
+;      (unless (re-search-forward "[\"']" (line-end-position) t)
+;        (error "Unterminated file name"))
+;      (find-file
+;       (concat (file-name-directory (buffer-file-name))
+;               (buffer-substring path-start (1- (point))))))))
+;
+;(require 'js2-mode)
+;(define-key js2-mode-map (kbd "C-c i") #'dt-js-goto-import)
 
 ;;; dumb-jump
 (use-package dumb-jump
